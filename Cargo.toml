@@ -1,0 +1,27 @@
+[package]
+name = "native-bench-arkworks"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ark-bls12-381 = { version = "0.4.0", features = ["curve"] }
+ark-bls12-377 = { version = "0.4.0", features = ["curve"] }
+ark-bw6-761 = { version = "0.4.0" }
+ark-ed-on-bls12-381 = { version = "0.4.0" }
+ark-ed-on-bls12-377 = { version = "0.4.0" }
+ark-ff = { version = "0.4.0" }
+ark-ec = { version = "0.4.0" }
+ark-std = { version = "0.4.0" }
+ark-snark = { version = "0.4.0" }
+ark-groth16 = { version = "0.4.0", features = [ "r1cs" ] }
+ark-crypto-primitives = { version = "0.4.0", features = [ "r1cs", "snark" ] } 
+ark-serialize = { version = "0.4.0", features = [ "derive" ] }
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "arkworks"
+harness = false
