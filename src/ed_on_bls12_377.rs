@@ -15,7 +15,7 @@ pub fn do_msm(samples: u32) -> Result<(), Error> {
 
 pub fn do_mul_affine() -> Result<(), Error> {
     let _out =
-        <ark_ed_on_bls12_377::EdwardsConfig as ark_ec::models::twisted_edwards::TECurveConfig>::msm(
+        <ark_ed_on_bls12_377::EdwardsConfig as ark_ec::models::twisted_edwards::TECurveConfig>::mul_affine(
             &[ark_ed_on_bls12_377::EdwardsAffine::generator()],
             &[2u64.into()],
         );
