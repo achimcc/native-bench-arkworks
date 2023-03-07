@@ -4,7 +4,7 @@ use ark_ff::Fp;
 use ark_groth16::Groth16;
 use ark_serialize::{CanonicalDeserialize, Compress, Validate};
 use ark_snark::SNARK;
-use ark_std::{io::Error, vec::Vec};
+use ark_std::io::Error;
 use frame_support::assert_ok;
 
 pub fn do_pairing() -> Result<(), Error> {
