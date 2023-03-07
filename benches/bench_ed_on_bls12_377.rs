@@ -1,16 +1,18 @@
 use criterion::Criterion;
 
 pub fn bench_ed_on_bls12_377(c: &mut Criterion) {
-    // let mut c = Criterion::default();
+    let (bases_10, scalars_10) = generate_arguments::<ark_ed_on_bls12_377::EdwardsProjective>(10);
+    let (bases_1000, scalars_1000) =
+        generate_arguments::<ark_ed_on_bls12_377::EdwardsProjective>(1000);
     let mut group = c.benchmark_group("ed_on_bls12_377");
     group.bench_function("msm, 10 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_377::do_msm(10);
+            let _ = native_bench_arkworks::ed_on_bls12_377::do_msm(bases_10, scalars_10);
         });
     });
     group.bench_function("msm, 1000 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_377::do_msm(1000);
+            let _ = native_bench_arkworks::ed_on_bls12_377::do_msm(bases_1000, scalars_1000);
         });
     });
     group.bench_function("mul affine", |b| {

@@ -1,10 +1,11 @@
-use ark_bls12_381::{Bls12_381, Fr as BlsFr, FrConfig};
-use ark_ec::{pairing::Pairing, short_weierstrass::SWCurveConfig, AffineRepr, Group};
-use ark_ff::{fields::MontBackend, Fp};
+use ark_bls12_381::{Bls12_381, Fr as BlsFr};
+use ark_ec::{pairing::Pairing, AffineRepr, CurveConfig, Group};
+use ark_ff::Fp;
 use ark_groth16::Groth16;
 use ark_serialize::{CanonicalDeserialize, Compress, Validate};
 use ark_snark::SNARK;
 use ark_std::{io::Error, vec::Vec};
+use frame_support::assert_ok;
 
 pub fn do_pairing() -> Result<(), Error> {
     let _ = ark_bls12_381::Bls12_381::multi_pairing(
@@ -14,24 +15,28 @@ pub fn do_pairing() -> Result<(), Error> {
     Ok(())
 }
 
-pub fn do_msm_g1(samples: u32) -> Result<(), Error> {
-    let g = ark_bls12_381::g1::G1Affine::generator();
-    let v: Vec<_> = (0..samples).map(|_| g).collect();
-    let scalars: Vec<_> = (0..samples).map(|_| ark_ff::Fp::from(2u64)).collect();
-    let _out = <ark_bls12_381::g1::Config as SWCurveConfig>::msm(&v[..], &scalars[..]);
+pub fn do_msm_g1(
+    bases: &[ark_ec::short_weierstrass::Affine<ark_bls12_381::g1::Config>],
+    scalars: &[<ark_bls12_381::g1::Config as CurveConfig>::ScalarField],
+) -> Result<(), Error> {
+    let _out = <ark_bls12_381::g1::Config as ark_ec::models::short_weierstrass::SWCurveConfig>::msm(
+        bases, scalars,
+    );
     Ok(())
 }
 
-pub fn do_msm_g2(samples: u32) -> Result<(), Error> {
-    let g = ark_bls12_381::g2::G2Affine::generator();
-    let v: Vec<_> = (0..samples).map(|_| g).collect();
-    let scalars: Vec<_> = (0..samples).map(|_| ark_ff::Fp::from(2u64)).collect();
-    let _out = <ark_bls12_381::g2::Config as SWCurveConfig>::msm(&v[..], &scalars[..]);
+pub fn do_msm_g2(
+    bases: &[ark_ec::short_weierstrass::Affine<ark_bls12_381::g2::Config>],
+    scalars: &[<ark_bls12_381::g2::Config as CurveConfig>::ScalarField],
+) -> Result<(), Error> {
+    let _out = <ark_bls12_381::g2::Config as ark_ec::short_weierstrass::SWCurveConfig>::msm(
+        bases, scalars,
+    );
     Ok(())
 }
 
 pub fn do_mul_affine_g1() -> Result<(), Error> {
-    let _out = <ark_bls12_381::g1::Config as SWCurveConfig>::mul_affine(
+    let _out = <ark_bls12_381::g1::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
         &ark_bls12_381::G1Affine::generator(),
         &[2u64],
     );
@@ -39,15 +44,16 @@ pub fn do_mul_affine_g1() -> Result<(), Error> {
 }
 
 pub fn do_mul_projective_g1() -> Result<(), Error> {
-    let _out = <ark_bls12_381::g1::Config as SWCurveConfig>::mul_projective(
-        &ark_bls12_381::G1Projective::generator(),
-        &[2u64],
-    );
+    let _out =
+        <ark_bls12_381::g1::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
+            &ark_bls12_381::G1Projective::generator(),
+            &[2u64],
+        );
     Ok(())
 }
 
 pub fn do_mul_affine_g2() -> Result<(), Error> {
-    let _out = <ark_bls12_381::g2::Config as SWCurveConfig>::mul_affine(
+    let _out = <ark_bls12_381::g2::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
         &ark_bls12_381::G2Affine::generator(),
         &[2u64],
     );
@@ -55,10 +61,11 @@ pub fn do_mul_affine_g2() -> Result<(), Error> {
 }
 
 pub fn do_mul_projective_g2() -> Result<(), Error> {
-    let _out = <ark_bls12_381::g2::Config as SWCurveConfig>::mul_projective(
-        &ark_bls12_381::G2Projective::generator(),
-        &[2u64],
-    );
+    let _out =
+        <ark_bls12_381::g2::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
+            &ark_bls12_381::G2Projective::generator(),
+            &[2u64],
+        );
     Ok(())
 }
 
@@ -111,12 +118,9 @@ pub fn do_verify_groth16() -> Result<(), Error> {
         Validate::No,
     )
     .unwrap();
-    let c = Fp::<MontBackend<FrConfig, 4>, 4>::deserialize_with_mode(
-        C_SERIALIZED,
-        Compress::Yes,
-        Validate::No,
-    )
-    .unwrap();
+
+    let c = Fp::deserialize_with_mode(C_SERIALIZED, Compress::Yes, Validate::No).unwrap();
+
     let proof = <Groth16<Bls12_381> as SNARK<BlsFr>>::Proof::deserialize_with_mode(
         PROOF_SERIALIZED,
         Compress::Yes,
@@ -124,7 +128,7 @@ pub fn do_verify_groth16() -> Result<(), Error> {
     )
     .unwrap();
 
-    assert!(Groth16::<Bls12_381>::verify(&vk, &[c], &proof).unwrap());
+    assert_ok!(Groth16::<Bls12_381>::verify(&vk, &[c], &proof));
 
     Ok(())
 }

@@ -1,21 +1,19 @@
-use ark_ec::{short_weierstrass::SWCurveConfig, AffineRepr, Group};
 use ark_std::{io::Error, vec::Vec};
 
-pub fn do_msm_sw(samples: u32) -> Result<(), Error> {
-    let g = ark_ed_on_bls12_381::SWAffine::generator();
-    let v: Vec<_> = (0..samples).map(|_| g).collect();
-    let scalars: Vec<_> = (0..samples).map(|_| ark_ff::Fp::from(2u32)).collect();
-    let _out = <ark_ed_on_bls12_381::EdwardsConfig as SWCurveConfig>::msm(&v[..], &scalars[..]);
+pub fn do_msm_sw(
+    bases: &[sp_ark_models::short_weierstrass::Affine<ark_ed_on_bls12_381::SWConfig>],
+    scalars: &[<ark_ed_on_bls12_381::SWConfig as ark_ec::CurveConfig>::ScalarField],
+) -> Result<(), Error> {
+    let _out = <ark_ed_on_bls12_381::EdwardsConfig as SWCurveConfig>::msm(bases, scalars);
     Ok(())
 }
 
-pub fn do_msm_te(samples: u32) -> Result<(), Error> {
-    let g = ark_ed_on_bls12_381::EdwardsAffine::generator();
-    let v: Vec<_> = (0..samples).map(|_| g).collect();
-    let scalars: Vec<_> = (0..samples).map(|_| ark_ff::Fp::from(2u64)).collect();
+pub fn do_msm_te(
+    bases: &[ark_ec::twisted_edwards::Affine<ark_ed_on_bls12_381::JubjubConfig>],
+    scalars: &[<ark_ed_on_bls12_381::EdwardsConfig as ark_ec::CurveConfig>::ScalarField],
+) -> Result<(), Error> {
     let _out = <ark_ed_on_bls12_381::JubjubConfig as ark_ec::twisted_edwards::TECurveConfig>::msm(
-        &v[..],
-        &scalars[..],
+        bases, scalars,
     );
     Ok(())
 }
@@ -30,7 +28,7 @@ pub fn do_mul_affine_sw() -> Result<(), Error> {
 
 pub fn do_mul_affine_te() -> Result<(), Error> {
     let _out =
-		<ark_ed_on_bls12_381::EdwardsConfig as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
+		<ark_ed_on_bls12_381::EdwardsConfig as sp_ark_models::short_weierstrass::SWCurveConfig>::mul_affine(
 			&ark_ed_on_bls12_381::SWAffine::generator(),
 			&[2u64],
 		);
@@ -39,7 +37,7 @@ pub fn do_mul_affine_te() -> Result<(), Error> {
 
 pub fn do_mul_projective_sw() -> Result<(), Error> {
     let _out =
-		<ark_ed_on_bls12_381::EdwardsConfig as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
+		<ark_ed_on_bls12_381::EdwardsConfig as sp_ark_models::short_weierstrass::SWCurveConfig>::mul_projective(
 			&ark_ed_on_bls12_381::SWProjective::generator(),
 			&[2u64],
 		);

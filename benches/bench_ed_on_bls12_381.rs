@@ -1,7 +1,16 @@
 use criterion::Criterion;
 
 pub fn bench_ed_on_bls12_381(c: &mut Criterion) {
-    // let mut c = Criterion::default();
+    let (bases_sw_10, scalars_sw_10) = generate_arguments::<
+        ark_ec::short_weierstrass::Projective<ark_ed_on_bls12_381::EdwardsConfig>,
+    >(10);
+    let (bases_sw_1000, scalars_sw_1000) = generate_arguments::<
+        ark_ec::short_weierstrass::Projective<ark_ed_on_bls12_381::EdwardsConfig>,
+    >(1000);
+    let (bases_te_10, scalars_te_10) =
+        generate_arguments::<ark_ed_on_bls12_381::EdwardsProjective>(10);
+    let (bases_te_1000, scalars_te_1000) =
+        generate_arguments::<ark_ed_on_bls12_381::EdwardsProjective>(1000);
     let mut group = c.benchmark_group("ed_on_bls12_381");
     group.bench_function("mul affine sw", |b| {
         b.iter(|| {
@@ -25,22 +34,24 @@ pub fn bench_ed_on_bls12_381(c: &mut Criterion) {
     });
     group.bench_function("msm sw, 10 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_sw(10);
+            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_sw(bases_sw_10, scalars_sw_10);
         });
     });
     group.bench_function("msm sw, 1000 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_sw(1000);
+            let _ =
+                native_bench_arkworks::ed_on_bls12_381::do_msm_sw(bases_sw_1000, scalars_sw_1000);
         });
     });
     group.bench_function("mwm te, 10 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_te(10);
+            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_te(bases_te_10, scalars_te_10);
         });
     });
     group.bench_function("mwm te, 1000 arguments", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_381::do_msm_te(1000);
+            let _ =
+                native_bench_arkworks::ed_on_bls12_381::do_msm_te(bases_te_1000, scalars_te_1000);
         });
     });
     group.finish();
