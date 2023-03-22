@@ -32,10 +32,10 @@ pub fn bench_bls12_377(c: &mut Criterion) {
         .map(|base| base.into_affine())
         .collect::<Vec<_>>();
 
-    let (a, b) = generate_pairing_args::<ark_bls12_377::G1Affine, ark_bls12_377::G2Affine>();
+    let (arg1, arg2) = generate_pairing_args::<ark_bls12_377::G1Affine, ark_bls12_377::G2Affine>();
     group.bench_function("pairing", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bls12_377::do_pairing(a, b);
+            let _ = native_bench_arkworks::bls12_377::do_pairing(arg1, arg2);
         });
     });
     group.bench_function("msm g1, 10 arguments", |b| {

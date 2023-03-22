@@ -76,10 +76,10 @@ pub fn bench_bw6_761(c: &mut Criterion) {
             let _ = native_bench_arkworks::bw6_761::do_mul_projective_g2(&base, scalar);
         });
     });
-    let (a, b) = generate_pairing_args::<ark_bw6_761::G1Affine, ark_bw6_761::G2Affine>();
+    let (arg1, arg2) = generate_pairing_args::<ark_bw6_761::G1Affine, ark_bw6_761::G2Affine>();
     group.bench_function("pairing", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bw6_761::do_pairing(a, b);
+            let _ = native_bench_arkworks::bw6_761::do_pairing(arg1, arg2);
         });
     });
     group.finish();

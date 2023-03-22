@@ -31,10 +31,10 @@ pub fn bench_bls12_381(c: &mut Criterion) {
         .collect::<Vec<_>>();
     let mut group = c.benchmark_group("bls12_381");
 
-    let (a, b) = generate_pairing_args::<ark_bls12_381::G1Affine, ark_bls12_381::G2Affine>();
+    let (arg1, arg2) = generate_pairing_args::<ark_bls12_381::G1Affine, ark_bls12_381::G2Affine>();
     group.bench_function("normal", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bls12_381::do_pairing(a, b);
+            let _ = native_bench_arkworks::bls12_381::do_pairing(arg1, arg2);
         });
     });
     group.bench_function("msm g1, 10 arguments", |b| {
