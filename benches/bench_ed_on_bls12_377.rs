@@ -31,13 +31,13 @@ pub fn bench_ed_on_bls12_377(c: &mut Criterion) {
     let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_377::EdwardsAffine>();
     group.bench_function("mul affine", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_377::do_mul_affine(&base, &scalar);
+            let _ = native_bench_arkworks::ed_on_bls12_377::do_mul_affine(&base, scalar);
         });
     });
     let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_377::EdwardsProjective>();
     group.bench_function("mul projective", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::ed_on_bls12_377::do_mul_projective(&base, &scalar);
+            let _ = native_bench_arkworks::ed_on_bls12_377::do_mul_projective(&base, scalar);
         });
     });
     group.finish();

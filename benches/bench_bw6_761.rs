@@ -55,25 +55,25 @@ pub fn bench_bw6_761(c: &mut Criterion) {
     let (base, scalar) = generate_scalar_args::<ark_bw6_761::G1Affine>();
     group.bench_function("mul affine g1", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bw6_761::do_mul_affine_g1(&base, &scalar);
+            let _ = native_bench_arkworks::bw6_761::do_mul_affine_g1(&base, scalar);
         });
     });
     let (base, scalar) = generate_scalar_args::<ark_bw6_761::G1Projective>();
     group.bench_function("mul projective g1", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bw6_761::do_mul_projective_g1(&base, &scalar);
+            let _ = native_bench_arkworks::bw6_761::do_mul_projective_g1(&base, scalar);
         });
     });
     let (base, scalar) = generate_scalar_args::<ark_bw6_761::G2Affine>();
     group.bench_function("mul affine g2", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bw6_761::do_mul_affine_g2(&base, &scalar);
+            let _ = native_bench_arkworks::bw6_761::do_mul_affine_g2(&base, scalar);
         });
     });
     let (base, scalar) = generate_scalar_args::<ark_bw6_761::G2Projective>();
     group.bench_function("mul projective g2", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bw6_761::do_mul_projective_g2(&base, &scalar);
+            let _ = native_bench_arkworks::bw6_761::do_mul_projective_g2(&base, scalar);
         });
     });
     let (a, b) = generate_pairing_args::<ark_bw6_761::G1Affine, ark_bw6_761::G2Affine>();

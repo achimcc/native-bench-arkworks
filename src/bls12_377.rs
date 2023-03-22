@@ -26,7 +26,7 @@ pub fn do_msm_g2(
     Ok(())
 }
 
-pub fn do_mul_projective_g1(base: &ark_bls12_377::G1Projective, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_projective_g1(base: &ark_bls12_377::G1Projective, scalar: u64) -> Result<(), Error> {
     let _out =
         <ark_bls12_377::g1::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
             base,
@@ -35,7 +35,7 @@ pub fn do_mul_projective_g1(base: &ark_bls12_377::G1Projective, scalar: &u64) ->
     Ok(())
 }
 
-pub fn do_mul_affine_g1(base: &ark_bls12_377::G1Affine, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_affine_g1(base: &ark_bls12_377::G1Affine, scalar: u64) -> Result<(), Error> {
     let _out = <ark_bls12_377::g1::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
         base,
         &[scalar],
@@ -43,7 +43,7 @@ pub fn do_mul_affine_g1(base: &ark_bls12_377::G1Affine, scalar: &u64) -> Result<
     Ok(())
 }
 
-pub fn do_mul_projective_g2(base: &ark_bls12_377::G2Projective, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_projective_g2(base: &ark_bls12_377::G2Projective, scalar: u64) -> Result<(), Error> {
     let _out =
         <ark_bls12_377::g2::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
             base,
@@ -52,7 +52,7 @@ pub fn do_mul_projective_g2(base: &ark_bls12_377::G2Projective, scalar: &u64) ->
     Ok(())
 }
 
-pub fn do_mul_affine_g2(base: &ark_bls12_377::G2Affine, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_affine_g2(base: &ark_bls12_377::G2Affine, scalar: u64) -> Result<(), Error> {
     let _out = <ark_bls12_377::g2::Config as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
         base,
         &[scalar],

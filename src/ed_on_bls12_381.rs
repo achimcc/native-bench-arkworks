@@ -22,7 +22,7 @@ pub fn do_msm_te(
     Ok(())
 }
 
-pub fn do_mul_affine_sw(base: &ark_ed_on_bls12_381::SWAffine, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_affine_sw(base: &ark_ed_on_bls12_381::SWAffine, scalar: u64) -> Result<(), Error> {
     let _out = <ark_ed_on_bls12_381::EdwardsConfig as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
         base,
         &[scalar],
@@ -30,7 +30,7 @@ pub fn do_mul_affine_sw(base: &ark_ed_on_bls12_381::SWAffine, scalar: &u64) -> R
     Ok(())
 }
 
-pub fn do_mul_affine_te(base: &ark_ed_on_bls12_381::SWAffine, scalar: &u64) -> Result<(), Error> {
+pub fn do_mul_affine_te(base: &ark_ed_on_bls12_381::SWAffine, scalar: u64) -> Result<(), Error> {
     let _out =
 		<ark_ed_on_bls12_381::EdwardsConfig as ark_ec::short_weierstrass::SWCurveConfig>::mul_affine(
 			base,
@@ -41,7 +41,7 @@ pub fn do_mul_affine_te(base: &ark_ed_on_bls12_381::SWAffine, scalar: &u64) -> R
 
 pub fn do_mul_projective_sw(
     base: &ark_ed_on_bls12_381::SWProjective,
-    scalar: &u64,
+    scalar: u64,
 ) -> Result<(), Error> {
     let _out =
 		<ark_ed_on_bls12_381::EdwardsConfig as ark_ec::short_weierstrass::SWCurveConfig>::mul_projective(
@@ -53,7 +53,7 @@ pub fn do_mul_projective_sw(
 
 pub fn do_mul_projective_te(
     base: &ark_ed_on_bls12_381::EdwardsProjective,
-    scalar: &u64,
+    scalar: u64,
 ) -> Result<(), Error> {
     let _out = <ark_ed_on_bls12_381::EdwardsConfig as ark_ec::twisted_edwards::TECurveConfig>::mul_projective(
 		base,
