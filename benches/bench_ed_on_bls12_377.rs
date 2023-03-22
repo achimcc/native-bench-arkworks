@@ -1,8 +1,6 @@
 use ark_ec::CurveGroup;
 use criterion::Criterion;
-use native_bench_arkworks::utils::{
-    generate_msm_args, generate_pairing_args, generate_scalar_args,
-};
+use native_bench_arkworks::utils::{generate_msm_args, generate_scalar_args};
 
 pub fn bench_ed_on_bls12_377(c: &mut Criterion) {
     let (bases_10, scalars_10) = generate_msm_args::<ark_ed_on_bls12_377::EdwardsProjective>(10);

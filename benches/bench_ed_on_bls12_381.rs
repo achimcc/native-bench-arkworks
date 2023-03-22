@@ -1,8 +1,6 @@
 use ark_ec::CurveGroup;
 use criterion::Criterion;
-use native_bench_arkworks::utils::{
-    generate_msm_args, generate_pairing_args, generate_scalar_args,
-};
+use native_bench_arkworks::utils::{generate_msm_args, generate_scalar_args};
 
 pub fn bench_ed_on_bls12_381(c: &mut Criterion) {
     let (bases_sw_10, scalars_sw_10) = generate_msm_args::<
@@ -33,25 +31,25 @@ pub fn bench_ed_on_bls12_381(c: &mut Criterion) {
         .collect::<Vec<_>>();
     let mut group = c.benchmark_group("ed_on_bls12_381");
 
-    let (base, scalar) = generate_scalar_args::<ed_on_bls12_381::SWAffine>();
+    let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_381::SWAffine>();
     group.bench_function("mul affine sw", |b| {
         b.iter(|| {
             let _ = native_bench_arkworks::ed_on_bls12_381::do_mul_affine_sw(&base, scalar);
         });
     });
-    let (base, scalar) = generate_scalar_args::<ed_on_bls12_381::SWProjective>();
+    let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_381::SWProjective>();
     group.bench_function("mul projective sw", |b| {
         b.iter(|| {
             let _ = native_bench_arkworks::ed_on_bls12_381::do_mul_projective_sw(&base, scalar);
         });
     });
-    let (base, scalar) = generate_scalar_args::<ed_on_bls12_381::EdwardsAffine>();
+    let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_381::SWAffine>();
     group.bench_function("mul affine te", |b| {
         b.iter(|| {
             let _ = native_bench_arkworks::ed_on_bls12_381::do_mul_affine_te(&base, scalar);
         });
     });
-    let (base, scalar) = generate_scalar_args::<ed_on_bls12_381::EdwardsProjective>();
+    let (base, scalar) = generate_scalar_args::<ark_ed_on_bls12_381::EdwardsProjective>();
     group.bench_function("mul projective te", |b| {
         b.iter(|| {
             let _ = native_bench_arkworks::ed_on_bls12_381::do_mul_projective_te(&base, scalar);
