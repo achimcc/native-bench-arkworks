@@ -12,19 +12,22 @@ pub fn do_msm(
     Ok(())
 }
 
-pub fn do_mul_affine() -> Result<(), Error> {
+pub fn do_mul_affine(base: &ark_ed_on_bls12_377::EdwardsAffine, scalar: &u64) -> Result<(), Error> {
     let _out =
 		<ark_ed_on_bls12_377::EdwardsConfig as ark_ec::models::twisted_edwards::TECurveConfig>::mul_affine(
-			&ark_ed_on_bls12_377::EdwardsAffine::generator(),
-			&[2u64],
+			base,
+			&[scalar],
 		);
     Ok(())
 }
 
-pub fn do_mul_projective() -> Result<(), Error> {
+pub fn do_mul_projective(
+    base: &ark_ed_on_bls12_377::EdwardsProjective,
+    scalar: &u64,
+) -> Result<(), Error> {
     let _out = <ark_ed_on_bls12_377::EdwardsConfig as ark_ec::twisted_edwards::TECurveConfig>::mul_projective(
-        &ark_ed_on_bls12_377::EdwardsProjective::generator(),
-        &[2u64],
+        base,
+        &[scalar],
     );
     Ok(())
 }
