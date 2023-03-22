@@ -1,4 +1,4 @@
-use ark_ec::{pairing::Pairing, AffineRepr, Group};
+use ark_ec::pairing::Pairing;
 use ark_std::io::Error;
 
 pub fn do_pairing(a: ark_bls12_377::G1Affine, b: ark_bls12_377::G2Affine) -> Result<(), Error> {

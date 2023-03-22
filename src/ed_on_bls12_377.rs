@@ -1,4 +1,3 @@
-use ark_ec::{AffineRepr, Group};
 use ark_std::io::Error;
 
 pub fn do_msm(

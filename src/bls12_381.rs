@@ -1,5 +1,5 @@
 use ark_bls12_381::{Bls12_381, Fr as BlsFr};
-use ark_ec::{pairing::Pairing, AffineRepr, CurveConfig, Group};
+use ark_ec::{pairing::Pairing, CurveConfig};
 use ark_ff::Fp;
 use ark_groth16::Groth16;
 use ark_serialize::{CanonicalDeserialize, Compress, Validate};

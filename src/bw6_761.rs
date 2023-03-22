@@ -1,4 +1,4 @@
-use ark_ec::{pairing::Pairing, AffineRepr, Group};
+use ark_ec::pairing::Pairing;
 use ark_std::io::Error;
 
 pub fn do_msm_g1(
