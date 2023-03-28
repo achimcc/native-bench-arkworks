@@ -108,8 +108,8 @@ pub const C_SERIALIZED: &[u8] = &[
     209, 70, 78, 67, 71, 89, 204, 203, 208, 132, 24,
 ];
 
-pub fn do_verify_groth16(vk: Vec<u8>, c: Vec<u8>, proof: Vec<u8>) -> Result<(), Error> {
-    let cursor = Cursor::new(&vk);
+pub fn do_verify_groth16(vk: &Vec<u8>, c: &Vec<u8>, proof: &Vec<u8>) -> Result<(), Error> {
+    let cursor = Cursor::new(vk);
     let vk = <Groth16<Bls12_381> as SNARK<BlsFr>>::VerifyingKey::deserialize_with_mode(
         cursor,
         Compress::No,
@@ -117,10 +117,10 @@ pub fn do_verify_groth16(vk: Vec<u8>, c: Vec<u8>, proof: Vec<u8>) -> Result<(), 
     )
     .unwrap();
 
-    let cursor = Cursor::new(&c);
+    let cursor = Cursor::new(c);
     let c = Fp::deserialize_with_mode(cursor, Compress::No, Validate::No).unwrap();
 
-    let cursor = Cursor::new(&proof);
+    let cursor = Cursor::new(proof);
     let proof = <Groth16<Bls12_381> as SNARK<BlsFr>>::Proof::deserialize_with_mode(
         cursor,
         Compress::No,

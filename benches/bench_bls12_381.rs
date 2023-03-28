@@ -120,7 +120,7 @@ pub fn bench_bls12_381(c: &mut Criterion) {
             .unwrap();
             let proof = serialize_argument(proof);
         b.iter(|| {
-            let _ = native_bench_arkworks::bls12_381::do_verify_groth16(vk, c, proof);
+            let _ = native_bench_arkworks::bls12_381::do_verify_groth16(&vk, &c, &proof);
         });
     });
     group.finish();
