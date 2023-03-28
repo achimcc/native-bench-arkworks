@@ -1,3 +1,4 @@
+use ark_bls12_381::Fr as BlsFr;
 use ark_ec::CurveGroup;
 use ark_ff::{Fp, MontBackend};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
