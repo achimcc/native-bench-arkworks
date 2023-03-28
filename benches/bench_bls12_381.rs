@@ -103,8 +103,7 @@ pub fn bench_bls12_381(c: &mut Criterion) {
         });
     });
     group.bench_function("groth16", |b| {
-        b.iter(|| {
-            let vk = <Groth16<ark_bls12_381::Bls12_381> as SNARK<BlsFr>>::VerifyingKey::deserialize_with_mode(
+        let vk = <Groth16<ark_bls12_381::Bls12_381> as SNARK<BlsFr>>::VerifyingKey::deserialize_with_mode(
                 native_bench_arkworks::bls12_381::VK_SERIALIZED,
                 Compress::Yes,
                 Validate::No,
@@ -120,6 +119,7 @@ pub fn bench_bls12_381(c: &mut Criterion) {
             )
             .unwrap();
             let proof = serialize_argument(proof);
+        b.iter(|| {
             let _ = native_bench_arkworks::bls12_381::do_verify_groth16(vk, c, proof);
         });
     });
