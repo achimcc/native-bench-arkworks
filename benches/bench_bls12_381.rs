@@ -1,8 +1,19 @@
 use ark_ec::CurveGroup;
+use ark_ff::{Fp, MontBackend};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
+use ark_snark::SNARK;
+use ark_std::{io::Cursor, vec, vec::Vec};
 use criterion::Criterion;
 use native_bench_arkworks::utils::{
     generate_msm_args, generate_pairing_args, generate_scalar_args,
 };
+
+fn serialize_argument(argument: impl CanonicalSerialize) -> Vec<u8> {
+    let mut serialized_argument = vec![0u8; argument.serialized_size(Compress::No)];
+    let mut cursor = Cursor::new(&mut serialized_argument[..]);
+    argument.serialize_uncompressed(&mut cursor).unwrap();
+    serialized_argument
+}
 
 pub fn bench_bls12_381(c: &mut Criterion) {
     let (bases_g1_10, scalars_g1_10) =
@@ -91,7 +102,23 @@ pub fn bench_bls12_381(c: &mut Criterion) {
     });
     group.bench_function("groth16", |b| {
         b.iter(|| {
-            let _ = native_bench_arkworks::bls12_381::do_verify_groth16();
+            let vk = <Groth16<bls12_381::Bls12_381Optimized> as SNARK<BlsFrOptimized>>::VerifyingKey::deserialize_with_mode(
+                bls12_381::VK_SERIALIZED,
+                Compress::Yes,
+                Validate::No,
+            )
+            .unwrap();
+            let vk = serialize_argument(vk);
+            let c = Fp::<MontBackend<ark_bls12_381::FrConfig, 4>, 4>::deserialize_with_mode(bls12_381::C_SERIALIZED, Compress::Yes, Validate::No).unwrap();
+            let c = serialize_argument(c);
+            let proof = <Groth16<ark_bls12_381::Bls12_381> as SNARK<BlsFr>>::Proof::deserialize_with_mode(
+                bls12_381::PROOF_SERIALIZED,
+                Compress::Yes,
+                Validate::No,
+            )
+            .unwrap();
+            let proof = serialize_argument(proof);
+            let _ = native_bench_arkworks::bls12_381::do_verify_groth16(vk, c, proof);
         });
     });
     group.finish();
